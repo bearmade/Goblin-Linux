@@ -2,9 +2,14 @@
 //
 #include <iostream>
 #include "Goblin.h"
+#include <fstream>
 
 
 using namespace std;
+void saveGame();
+void loadGame();
+void processSaveLoad();
+void saveLoadScreen();
 char getch();
 void pauseGame();
 void printDisplay();
@@ -125,6 +130,110 @@ int itemBasePrice[3] = { 4, 2, 1 };
 string playerAttackMessage[5] = { "You attack ","You swing at ","You strike in the general area of ","You throw a rock at ","You trip into " };
 
 
+//function to process save/load screen
+void processSaveLoad(){
+    // display the save/load screen
+    cout << "Save/Load Screen" << endl;
+    cout << "1. Save Game" << endl;
+    cout << "2. Load Game" << endl;
+    cout << "3. New Game" << endl;
+    cout << "Enter your choice: ";
+    int choice;
+    cin >> choice;
+    switch (choice) {
+    case 1:
+        saveGame();
+        break;
+    case 2:
+        loadGame();
+        break;
+    case 3:
+        break;
+    default:
+        cout << "Invalid choice" << endl;
+        break;
+
+
+    }
+}
+
+//function to save the game to a file
+void saveGame() {
+    // open the file for writing
+    ofstream file("savegame.txt");
+    if (!file.is_open()) {
+       cout << "Error: could not open save game file" << endl;
+        return;
+    }
+    // write the game state to the file
+    file << playerX << " " << playerY << " " << pHealth << " " << pAttack << " " << pDefense << " " << pExp << " " << pLevel << " " << money << " " << steps << " " << goblinsKilled;
+    // write the inventory to the file
+    for (int i = 0; i < 3; i++) {
+        file << " " << itemAmount[i];
+    }
+    // close the file
+    file.close();
+    cout << "Game saved successfully!" << endl;
+    pauseGame();
+}
+
+// function to load the game from a file
+void loadGame(){
+
+
+    // open the file for reading
+    ifstream file("savegame.txt");
+    if (!file.is_open()) {
+        cout << "Error: could not open save game file" << endl;
+        return;
+    }
+    // read the game state from the file
+    file >> playerX >> playerY >> pHealth >> pAttack >> pDefense >> pExp >> pLevel >> money >> steps >> goblinsKilled;
+    // read the inventory from the file
+    for (int i = 0; i < 3; i++) {
+        file >> itemAmount[i];
+    }
+    // close the file
+    file.close();
+    // update the game state
+    playerPOS[0] = playerX;
+    playerPOS[1] = playerY;
+    // update the inventory
+    for (int i = 0; i < 3; i++) {
+        itemAmount[i] = itemAmount[i];
+        itemBasePrice[i] = itemBasePrice[i];
+        // print a message to confirm that the game was loaded successfully
+        cout << "Game loaded successfully!" << endl;
+        pauseGame();
+    
+    }
+}
+
+//function to bring up the save/load screen
+void saveLoadScreen() {
+    system("clear");
+    printDisplay();
+    cout << "\n\n";
+    // display the save/load screen
+    cout << "Save/Load Screen" << endl;
+    cout << "1. Save Game" << endl;
+    cout << "2. Load Game" << endl;
+    cout << "Enter your choice: ";
+    int choice;
+    cin >> choice;
+    switch (choice) {
+    case 1:
+        saveGame();
+        break;
+    case 2:
+        loadGame();
+        break;
+    default:
+       cout << "Invalid choice" << endl;
+        break;
+    }
+}
+
 
 /**
  * Reads a single character from the standard input without echoing it to the console.
@@ -205,7 +314,7 @@ void displayTitle()
     cout << RED + "          " + "/ /_/ / /_/ / /_/ / / / / / /     \n";
     cout << RED + "          " + "\\____/\\____/_.___/_/_/_/ /_/      \n";
     cout << RESET;
-
+    processSaveLoad();
 
 }
 
@@ -697,6 +806,9 @@ void processInput()
     case 'I':
         processInventory();
 
+        break;
+    case 'Q':
+        saveLoadScreen();
         break;
 
     }
