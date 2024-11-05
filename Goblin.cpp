@@ -64,12 +64,6 @@ const string CYAN = "\033[36m";
 const string bgCYAN = "\033[46m";
 const string BLINK = "\033[5m";
 const string REVERSED = "\033[7m";
-//string GROUND = bgWHITE + BLUE + "/\\" +RESET;
-//string gGROUND = bgGREEN + BLACK + ", " + RESET;
-//string WATER = bgBLUE+ "  " +RESET;
-//string GROUNDrand = bgWHITE + BLUE + "^ " + RESET;
-//string gGROUNDrand = bgGREEN+ YELLOW+"~."+RESET;
-//string WATERrand = bgBLUE + "~ " + RESET;
 
 
 string GROUND = "/\\" + RESET;
@@ -87,7 +81,6 @@ string VILLA = "  ";
 string SHORE = GREEN + ";:" + RESET;
 string WALKER = BLUE + "~ " + RESET;
 string crossWATER = bgCYAN + "~ " + RESET;
-
 string tempTileA = "  ";
 string tempTileB = "  ";
 string tempTileC = "  ";
@@ -101,20 +94,18 @@ int gridWidth = SIZE;
 int gridHeight = SIZE;
 int row = 0;
 int column = 0;
-
 vector<vector<string>> board(gridWidth, vector<string>(gridHeight, ""));
 vector<vector<string>> boardTemp(gridWidth, vector<string>(gridHeight, ""));
+bool bLoadGame = false;
 
 //Player variables
 string PLAYER = BLINK + "db" + RESET;
 int playerX = 0;
 int playerY = 0;
 int playerPOS[2] = { playerX,playerY };
-
 int tempPlayerX = 0;
 int tempPlayerY = 0;
 int tempPlayerPOS[2] = { tempPlayerX,tempPlayerY };
-
 int pHealth = 30;
 int pAttack = 1;
 int pDefense = 5;
@@ -123,14 +114,41 @@ int pLevel = 0;
 int money = 0;
 int steps = 0;
 int goblinsKilled = 0;
+
 //inventory variables
 string itemNames[3] = { "skulls","bones","meat" };
 int itemAmount[3] = { 0, 0, 0 };
 int itemBasePrice[3] = { 4, 2, 1 };
-bool bLoadGame = false;
 
-//string GOBLINname = " ";
-string playerAttackMessage[5] = { "You attack ","You swing at ","You strike in the general area of ","You throw a rock at ","You trip into " };
+string playerAttackMessage[5] = { "You attack ","You swing at ","You strike in the general area of ","You throw a rock at ","You trip into "  };
+
+//MAIN 
+int main()
+{
+    char input;
+    bool gameOver = false;
+    displayTitle();
+    generateWorldMap();
+
+    //game loop
+    while (gameOver == false)
+    {
+        printBoard();
+        printDisplay();
+        processInput();
+        processTerrain();
+        if (pHealth < 1)
+        {
+            cout << "you have died\n";
+            gameOver = true;
+
+        }
+
+    }
+    cout << "Game Over!" << endl;
+
+    return 0;
+}
 
 
 //function to process save/load screen
@@ -201,12 +219,7 @@ void loadGame(){
     for (int i = 0; i < 3; i++) {
         file >> itemAmount[i];
     }
-    // read the board from the file
-    for (int i = 0; i < gridWidth; i++) {
-        for (int j = 0; j < gridHeight; j++) {
-            file >> board[i][j];
-        }
-    }
+    
     // close the file
     file.close();
     // update the game state
@@ -246,12 +259,6 @@ void saveLoadScreen() {
     }
 }
 
-
-
-
-
-
-
 /**
  * Reads a single character from the standard input without echoing it to the console.
  * This function is a Linux-specific implementation of the Windows `getch()` function.
@@ -285,7 +292,6 @@ void pauseGame() {
     cout << "Press any key to continue...\n";
     getch();
 }
-
 
 // function that encrypts save file using XOR encryption
 void encryptSaveFile() {
@@ -344,42 +350,6 @@ void decryptSaveFile() {
     
 }
 
-int main()
-{
-    char input;
-    bool gameOver = false;
-    displayTitle();
-    //pauseGame();
-   
-    
-    generateWorldMap();
-
-    while (gameOver == false)
-    {
-
-
-        printBoard();
-        printDisplay();
-        processInput();
-        processTerrain();
-        if (pHealth < 1)
-        {
-            cout << "you have died\n";
-            gameOver = true;
-
-
-        }
-
-
-
-    }
-
-
-
-
-    return 0;
-}
-
 void displayTitle()
 {
 
@@ -392,7 +362,6 @@ void displayTitle()
     processSaveLoad();
 
 }
-
 
 /// Prints the game display information, including the player's health, level, gold, strength, steps taken, and goblins killed. Also prints any terrain-specific messages.
 void printDisplay()
@@ -409,6 +378,7 @@ void printDisplay()
     terrainMessage = " ";
 
 }
+
 /// Generates a random goblin name by combining first and last name components.
 /// The name is generated using arrays of first and last name prefixes and suffixes.
 /// The function returns the generated goblin name as a string.
@@ -890,8 +860,6 @@ void processInput()
     currentTerrain = tempTileA;
 }
 
-
-
 /**
  * Processes the movement of the player on the game board.
  *
@@ -907,15 +875,6 @@ void processMovement(int dx, int dy)
     tempTileB = tempTileA;
     playerPOS[1] = playerPOS[1] + 1;
 }
-// void processMovement(int dx, int dy)
-// {
-//     tempTileA = board[playerPOS[0] + dx][playerPOS[1] + dy];
-//     tempTileC = tempTileB;
-//     board[playerPOS[0] + dx][playerPOS[1] + dy] = PLAYER;
-//     board[playerPOS[0]][playerPOS[1]] = tempTileC;
-//     tempTileB = tempTileA;
-//     playerPOS[1] = playerPOS[1] + 1;
-// }
 
 /**
  * Generates a world map for the game by initializing the game board, applying cellular automata algorithms to create a maze-like structure, adding random walkers, and generating the player's starting position.
