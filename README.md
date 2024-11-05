@@ -1,7 +1,7 @@
 ![image1](https://github.com/bearmade/Goblin-Linux/blob/main/img/goblinTitle.png)
 
 # Goblin-Linux
-Linux version of Goblin, a simple rogue-like
+Linux version of Goblin, a minimal procedurally generated rogue-like with random encounters and turn-based combat.
 
 ## Controls
 - ``` WASD ``` to move
