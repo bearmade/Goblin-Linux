@@ -15,6 +15,7 @@ Linux version of Goblin, a simple rogue-like
 
 ## How to Play
 - Buy and sell goblin remains from merchants
+    - Buy low, sell high
 - Kill goblins to collect gold and remains
 - Refill health at inns
 - Increase strength through mentors
