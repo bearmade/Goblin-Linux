@@ -9,6 +9,7 @@ Linux version of Goblin, a simple rogue-like
 - ``` Q ``` to Save/Load
 
 ## Terrain Key
+- ``` db ``` - Player
 - ``` ' ``` - Goblin area
 - ``` [] = || ``` - Inns and Mentors
 - ``` space between Inns and Mentors ``` - Merchants
