@@ -10,6 +10,8 @@ void saveGame();
 void loadGame();
 void processSaveLoad();
 void saveLoadScreen();
+void encryptSaveFile();
+void decryptSaveFile();
 char getch();
 void pauseGame();
 void printDisplay();
@@ -125,6 +127,7 @@ int goblinsKilled = 0;
 string itemNames[3] = { "skulls","bones","meat" };
 int itemAmount[3] = { 0, 0, 0 };
 int itemBasePrice[3] = { 4, 2, 1 };
+bool bLoadGame = false;
 
 //string GOBLINname = " ";
 string playerAttackMessage[5] = { "You attack ","You swing at ","You strike in the general area of ","You throw a rock at ","You trip into " };
@@ -171,16 +174,21 @@ void saveGame() {
     for (int i = 0; i < 3; i++) {
         file << " " << itemAmount[i];
     }
+
+
+
+
     // close the file
     file.close();
     cout << "Game saved successfully!" << endl;
+    encryptSaveFile();
     pauseGame();
 }
 
 // function to load the game from a file
 void loadGame(){
 
-
+    decryptSaveFile();
     // open the file for reading
     ifstream file("savegame.txt");
     if (!file.is_open()) {
@@ -193,20 +201,24 @@ void loadGame(){
     for (int i = 0; i < 3; i++) {
         file >> itemAmount[i];
     }
+    // read the board from the file
+    for (int i = 0; i < gridWidth; i++) {
+        for (int j = 0; j < gridHeight; j++) {
+            file >> board[i][j];
+        }
+    }
     // close the file
     file.close();
     // update the game state
-    playerPOS[0] = playerX;
-    playerPOS[1] = playerY;
+    //playerPOS[0] = playerX;
+    //playerPOS[1] = playerY;
     // update the inventory
     for (int i = 0; i < 3; i++) {
         itemAmount[i] = itemAmount[i];
         itemBasePrice[i] = itemBasePrice[i];
-        // print a message to confirm that the game was loaded successfully
-        cout << "Game loaded successfully!" << endl;
-        pauseGame();
     
     }
+    encryptSaveFile();
 }
 
 //function to bring up the save/load screen
@@ -233,6 +245,11 @@ void saveLoadScreen() {
         break;
     }
 }
+
+
+
+
+
 
 
 /**
@@ -270,14 +287,72 @@ void pauseGame() {
 }
 
 
+// function that encrypts save file using XOR encryption
+void encryptSaveFile() {
+    // open the file for reading
+    ifstream file("savegame.txt");
+    if (!file.is_open()) {
+        cout << "Error: could not open save game file" << endl;
+    }
+    // read the game state from the file
+    string gameState;
+    getline(file, gameState);
+    // close the file
+    file.close();
+    // encrypt the game state using XOR encryption
+    for (int i = 0; i < gameState.length(); i++) {
+        gameState[i] = gameState[i] ^ 0x55;
+    }   
+    // open the file for writing
+    ofstream file2("savegame.txt");
+    if (!file2.is_open()) {
+        cout << "Error: could not open save game file" << endl;
+    }
+    // write the encrypted game
+    file2 << gameState; 
+    // close the file
+    file2.close();
+    cout << "Game saved successfully!" << endl;
+}
+
+// function that decrypts save file using XOR encryption
+void decryptSaveFile() {
+    // open the file for reading
+    ifstream file("savegame.txt");
+    if (!file.is_open()) {
+     cout << "Error: could not open save game file" << endl;
+    }
+    // read the game state from the file
+    string gameState;
+    getline(file, gameState);
+    // close the file
+    file.close();
+    // decrypt the game
+    for (int i = 0; i < gameState.length(); i++) {
+        gameState[i] = gameState[i] ^ 0x55;
+    }
+    // open the file for writing
+    ofstream file2("savegame.txt");
+    if (!file2.is_open()) {
+        cout << "Error: could not open save game file" << endl;
+    }
+    // write the decrypted
+    file2 << gameState;
+    // close the file
+    file2.close();
+    cout << "Game loaded successfully!" << endl;
+    
+}
+
 int main()
 {
     char input;
     bool gameOver = false;
     displayTitle();
-    pauseGame();
+    //pauseGame();
+   
+    
     generateWorldMap();
-
 
     while (gameOver == false)
     {
@@ -810,10 +885,12 @@ void processInput()
     case 'Q':
         saveLoadScreen();
         break;
-
+    
     }
     currentTerrain = tempTileA;
 }
+
+
 
 /**
  * Processes the movement of the player on the game board.
