@@ -181,7 +181,7 @@ void processSaveLoad(){
 //function to save the game to a file
 void saveGame() {
     // open the file for writing
-    ofstream file("savegame.txt");
+    ofstream file("gamesave");
     if (!file.is_open()) {
        cout << "Error: could not open save game file" << endl;
         return;
@@ -208,7 +208,7 @@ void loadGame(){
 
     decryptSaveFile();
     // open the file for reading
-    ifstream file("savegame.txt");
+    ifstream file("gamesave");
     if (!file.is_open()) {
         cout << "Error: could not open save game file" << endl;
         return;
@@ -296,7 +296,7 @@ void pauseGame() {
 // function that encrypts save file using XOR encryption
 void encryptSaveFile() {
     // open the file for reading
-    ifstream file("savegame.txt");
+    ifstream file("gamesave");
     if (!file.is_open()) {
         cout << "Error: could not open save game file" << endl;
     }
@@ -310,7 +310,7 @@ void encryptSaveFile() {
         gameState[i] = gameState[i] ^ 0x55;
     }   
     // open the file for writing
-    ofstream file2("savegame.txt");
+    ofstream file2("gamesave");
     if (!file2.is_open()) {
         cout << "Error: could not open save game file" << endl;
     }
@@ -324,7 +324,7 @@ void encryptSaveFile() {
 // function that decrypts save file using XOR encryption
 void decryptSaveFile() {
     // open the file for reading
-    ifstream file("savegame.txt");
+    ifstream file("gamesave");
     if (!file.is_open()) {
      cout << "Error: could not open save game file" << endl;
     }
@@ -338,7 +338,7 @@ void decryptSaveFile() {
         gameState[i] = gameState[i] ^ 0x55;
     }
     // open the file for writing
-    ofstream file2("savegame.txt");
+    ofstream file2("gamesave");
     if (!file2.is_open()) {
         cout << "Error: could not open save game file" << endl;
     }
