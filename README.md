@@ -26,6 +26,6 @@ Linux version of Goblin, a minimal procedurally generated rogue-like with random
 
 #### Screenshots
 
-![image1](https://github.com/bearmade/Goblin-Linux/blob/main/img/goblinImage1.png)
+![goblinImage1](https://github.com/user-attachments/assets/3918416c-991a-4130-811a-21a1d3d4734e)
 
 ![image1](https://github.com/bearmade/Goblin-Linux/blob/main/img/goblinImage2.png)
