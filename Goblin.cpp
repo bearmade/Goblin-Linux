@@ -683,7 +683,7 @@ void processBattle(string TYPE, string enemyType)
                 if (dropChance > 7)
                 {
                     cout << "you found " << dropAmount << " " << itemNames[dropItem - 1] << ".\n";
-                    itemAmount[dropItem - 1] = dropAmount;
+                    itemAmount[dropItem - 1] += dropAmount;
                 }
 
 
