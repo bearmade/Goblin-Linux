@@ -2,9 +2,9 @@
 Linux version of Goblin, a simple rogue-like
 
 ## Controls
-- WASD to move
-- I to open inventory
-- Q to Save/Load
+- ``` WASD ``` to move
+- ``` I ``` to open inventory
+- ``` Q ``` to Save/Load
 
 ## Terrain Key
 - ``` ' ``` - Goblin area
