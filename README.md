@@ -1,3 +1,5 @@
+![image1](https://github.com/bearmade/Goblin-Linux/blob/main/img/goblinTitle.png)
+
 # Goblin-Linux
 Linux version of Goblin, a simple rogue-like
 
