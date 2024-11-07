@@ -22,6 +22,8 @@ Linux version of Goblin, a minimal procedurally generated rogue-like with random
 - Kill goblins to collect gold and remains
 - Refill health at inns
 - Increase strength through mentors
+- Increase level by passing through goblin nests
+  
 
 
 #### Screenshots
